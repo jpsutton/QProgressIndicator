@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+6#!/usr/bin/env python
 
 """
   Author: Jared P. Sutton <jpsutton@gmail.com>
@@ -9,8 +9,9 @@
 """
 
 import sys
-from PySide.QtCore import *
-from PySide.QtGui import *
+from PySide6.QtCore import Property, Qt, QSize
+from PySide6.QtGui import QColor, QPainter
+from PySide6.QtWidgets import QWidget, QApplication, QSizePolicy
 
 class QProgressIndicator (QWidget):
   m_angle = None
@@ -22,7 +23,12 @@ class QProgressIndicator (QWidget):
   def __init__ (self, parent):
     # Call parent class constructor first
     super(QProgressIndicator, self).__init__(parent)
-    
+
+    # Detect foreground
+    app = QApplication.instance()
+    palette = app.style().standardPalette()
+    foreground_color = palette.text().color()    
+
     # Initialize Qt Properties
     self.setProperties()
     
@@ -31,7 +37,7 @@ class QProgressIndicator (QWidget):
     self.m_timerId = -1
     self.m_delay = 40
     self.m_displayedWhenStopped = False
-    self.m_color = Qt.black
+    self.m_color = foreground_color
     
     # Set size and focus policy
     self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
